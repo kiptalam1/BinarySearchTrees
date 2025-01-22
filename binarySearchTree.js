@@ -133,7 +133,27 @@ class Tree {
         }
         traverse(this.root);
     }
-
+    // post order traversal (left->right->root).
+    postOrder(callback) {
+        if (typeof callback !== 'function') {
+            throw new Error('A callback function is required.');
+        }
+        const traverse = (node) => {
+            if (node === null) return;
+            traverse(node.left);
+            traverse(node.right);
+            callback(node);
+        }
+        traverse(this.root);
+    }
+    // longest path from node to leaf.
+    height(node) {
+        // base case
+        if (node === null) return -1;
+        let leftHeight = this.height(node.left);
+        let rightHeight = this.height(node.right);
+        return 1 + Math.max(leftHeight, rightHeight);
+    }
 }
 
 
@@ -144,11 +164,17 @@ tree.deleteItem(9)
 console.log(tree.find(23))
 let node = tree.root;
 
-tree.levelOrder((node) => console.log(node.data));
-console.log("\n")
-tree.inOrder((node) => console.log(node.data));
-console.log("\n")
-tree.preOrder((node) => console.log(node.data));
+
+// console.log("\nLEVEL ORDER")
+// tree.levelOrder((node) => console.log(node.data));
+// console.log("\nINORDER")
+// tree.inOrder((node) => console.log(node.data));
+// console.log("\nPRE ORDER")
+// tree.preOrder((node) => console.log(node.data));
+// console.log("\nPOST ORDER")
+// tree.postOrder((node) => console.log(node.data));
+
+console.log("height:",tree.height(node))
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
