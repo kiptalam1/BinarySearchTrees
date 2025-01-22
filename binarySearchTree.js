@@ -182,29 +182,78 @@ class Tree {
         }
         return checkHeight(this.root) !== -1;
     }
+    rebalance () {
+        const collectData = () => {
+            const result = [];
+            this.inOrder(node => result.push(node.data)); 
+            return result;
+        };
+        const sortedArray = collectData();
+        this.root = this.buildTree(sortedArray);
+    }
 }
 
 
-let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-let tree = new Tree(arr);
-tree.insert(11);
-tree.deleteItem(9)
-console.log(tree.find(23))
-let node = tree.root;
+function generateRandomArray(size, max) {
+    return Array.from({ length: size }, () => Math.floor(Math.random() * max));
+}
+
+function main() {
+    // 1. Create a binary search tree from an array of random numbers < 100
+    const randomArray = generateRandomArray(15, 100);
+    const tree = new Tree(randomArray);
+
+    console.log("Initial Tree Created with Array:", randomArray);
+
+    // 2. Confirm the tree is balanced
+    console.log("Is the tree balanced initially?", tree.isBalanced());
+
+    // 3. Print all elements in level, pre, post, and in order
+    console.log("Level-order Traversal:");
+    tree.levelOrder(node => console.log(node.data));
+
+    console.log("Pre-order Traversal:");
+    tree.preOrder(node => console.log(node.data));
+
+    console.log("In-order Traversal:");
+    tree.inOrder(node => console.log(node.data));
+
+    console.log("Post-order Traversal:");
+    tree.postOrder(node => console.log(node.data));
+
+    // 4. Unbalance the tree by adding several numbers > 100
+    const unbalancingNumbers = [120, 130, 140, 150, 160];
+    unbalancingNumbers.forEach(num => tree.insert(num));
+
+    console.log("Unbalanced Tree by Adding Numbers:", unbalancingNumbers);
+
+    // 5. Confirm the tree is unbalanced
+    console.log("Is the tree balanced after unbalancing?", tree.isBalanced());
+
+    // 6. Balance the tree by calling rebalance
+    tree.rebalance();
+    console.log("Tree rebalanced.");
+
+    // 7. Confirm the tree is balanced
+    console.log("Is the tree balanced after rebalancing?", tree.isBalanced());
+
+    // 8. Print all elements in level, pre, post, and in order
+    console.log("Level-order Traversal after Rebalancing:");
+    tree.levelOrder(node => console.log(node.data));
+
+    console.log("Pre-order Traversal after Rebalancing:");
+    tree.preOrder(node => console.log(node.data));
+
+    console.log("In-order Traversal after Rebalancing:");
+    tree.inOrder(node => console.log(node.data));
+
+    console.log("Post-order Traversal after Rebalancing:");
+    tree.postOrder(node => console.log(node.data));
+}
+
+main();
 
 
-// console.log("\nLEVEL ORDER")
-// tree.levelOrder((node) => console.log(node.data));
-// console.log("\nIN ORDER")
-// tree.inOrder((node) => console.log(node.data));
-// console.log("\nPRE ORDER")
-// tree.preOrder((node) => console.log(node.data));
-// console.log("\nPOST ORDER")
-// tree.postOrder((node) => console.log(node.data));
-
-console.log("height:",tree.height(node))
-console.log("Depth:",tree.height(node))
-console.log("Is balanced?:",tree.isBalanced())
 
 
 
@@ -220,4 +269,4 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
         prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
 };
-// prettyPrint(node)
+//prettyPrint(node)
