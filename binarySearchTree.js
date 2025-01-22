@@ -105,6 +105,35 @@ class Tree {
             if (current.right) queue.push(current.right);
         }
     }
+    // in order traversal. (left->root->right).
+    inOrder(callback) {
+        if (typeof callback !== 'function') {
+            throw new Error('A callback function is required.');
+        }
+        const traverse = (node) => {
+            if (node === null) return;
+
+            traverse(node.left);
+            callback(node);
+            traverse(node.right);
+        } 
+
+        traverse(this.root);
+    }
+    // pre-order traversal (root->left->right).
+    preOrder(callback) {
+        if (typeof callback !== 'function') {
+            throw new Error('A callback function is required.');
+        }
+        const traverse = (node) => {
+            if (node === null) return;
+            callback(node);
+            traverse(node.left);
+            traverse(node.right);
+        }
+        traverse(this.root);
+    }
+
 }
 
 
@@ -116,6 +145,10 @@ console.log(tree.find(23))
 let node = tree.root;
 
 tree.levelOrder((node) => console.log(node.data));
+console.log("\n")
+tree.inOrder((node) => console.log(node.data));
+console.log("\n")
+tree.preOrder((node) => console.log(node.data));
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
@@ -129,4 +162,4 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
         prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
 };
-prettyPrint(node)
+// prettyPrint(node)
