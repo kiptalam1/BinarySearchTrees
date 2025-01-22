@@ -166,6 +166,22 @@ class Tree {
         //if node not found in tree.
         return -1;
     }
+    isBalanced() {
+        const checkHeight = (node) => {
+            if (node === null) return 0;
+            // check height of left node
+            const leftHeight = checkHeight(node.left);
+            if (leftHeight === -1) return -1;
+            // check height of right node
+            const rightHeight = checkHeight(node.right);
+            if (rightHeight === -1) return -1;
+            // check if current node balanced
+            if (Math.abs(leftHeight - rightHeight) > 1) return -1;
+            // return height of current node
+            return 1 + Math.max(leftHeight, rightHeight);
+        }
+        return checkHeight(this.root) !== -1;
+    }
 }
 
 
@@ -179,7 +195,7 @@ let node = tree.root;
 
 // console.log("\nLEVEL ORDER")
 // tree.levelOrder((node) => console.log(node.data));
-// console.log("\nINORDER")
+// console.log("\nIN ORDER")
 // tree.inOrder((node) => console.log(node.data));
 // console.log("\nPRE ORDER")
 // tree.preOrder((node) => console.log(node.data));
@@ -188,6 +204,8 @@ let node = tree.root;
 
 console.log("height:",tree.height(node))
 console.log("Depth:",tree.height(node))
+console.log("Is balanced?:",tree.isBalanced())
+
 
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
