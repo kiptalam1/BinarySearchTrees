@@ -154,6 +154,18 @@ class Tree {
         let rightHeight = this.height(node.right);
         return 1 + Math.max(leftHeight, rightHeight);
     }
+    depth(node) {
+        let current = this.root;
+        let currentDepth = 0;
+
+        while (current !== null) {
+            if (node === current) return currentDepth; //node found.
+            currentDepth++;
+            current = node < current ? current.left : current.right;
+        }
+        //if node not found in tree.
+        return -1;
+    }
 }
 
 
@@ -175,6 +187,8 @@ let node = tree.root;
 // tree.postOrder((node) => console.log(node.data));
 
 console.log("height:",tree.height(node))
+console.log("Depth:",tree.height(node))
+
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
